@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using LankaParts_Backend.Models;
 
 namespace LankaParts_Backend.Data
 {
@@ -8,6 +9,17 @@ namespace LankaParts_Backend.Data
             DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+        }
+
+        public DbSet<User> Users { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
         }
     }
 }
