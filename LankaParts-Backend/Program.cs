@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using LankaParts_Backend.Data;
+using LankaParts_Backend.Services.Interfaces;
+using LankaParts_Backend.Services.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection")
     )
 );
+
+// Register application services
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
