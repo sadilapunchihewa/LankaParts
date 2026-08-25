@@ -3,6 +3,7 @@ using System;
 using LankaParts_Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LankaParts_Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260825054350_AddPayments")]
+    partial class AddPayments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -297,48 +300,6 @@ namespace LankaParts_Backend.Migrations
                     b.ToTable("Payments");
                 });
 
-            modelBuilder.Entity("LankaParts_Backend.Models.Review", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Comment")
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("CustomerUserId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("OrderItemId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("SparePartId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerUserId");
-
-                    b.HasIndex("OrderItemId")
-                        .IsUnique();
-
-                    b.HasIndex("SparePartId", "CreatedAt");
-
-                    b.ToTable("Reviews");
-                });
-
             modelBuilder.Entity("LankaParts_Backend.Models.SellerCompany", b =>
                 {
                     b.Property<int>("Id")
@@ -599,33 +560,6 @@ namespace LankaParts_Backend.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("LankaParts_Backend.Models.Review", b =>
-                {
-                    b.HasOne("LankaParts_Backend.Models.User", "CustomerUser")
-                        .WithMany()
-                        .HasForeignKey("CustomerUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("LankaParts_Backend.Models.OrderItem", "OrderItem")
-                        .WithOne()
-                        .HasForeignKey("LankaParts_Backend.Models.Review", "OrderItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LankaParts_Backend.Models.SparePart", "SparePart")
-                        .WithMany("Reviews")
-                        .HasForeignKey("SparePartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CustomerUser");
-
-                    b.Navigation("OrderItem");
-
-                    b.Navigation("SparePart");
-                });
-
             modelBuilder.Entity("LankaParts_Backend.Models.SellerCompany", b =>
                 {
                     b.HasOne("LankaParts_Backend.Models.User", "ReviewedByUser")
@@ -678,11 +612,6 @@ namespace LankaParts_Backend.Migrations
             modelBuilder.Entity("LankaParts_Backend.Models.SellerCompany", b =>
                 {
                     b.Navigation("SpareParts");
-                });
-
-            modelBuilder.Entity("LankaParts_Backend.Models.SparePart", b =>
-                {
-                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("LankaParts_Backend.Models.User", b =>

@@ -1,0 +1,11 @@
+namespace LankaParts_Backend.Helpers
+{
+    public static class PaymentStatuses
+    {
+        public const string Pending = "Pending";
+        public const string Paid = "Paid";
+        public const string Failed = "Failed";
+        public const string Refunded = "Refunded";
+        public const string Cancelled = "Cancelled";
+    }
+}

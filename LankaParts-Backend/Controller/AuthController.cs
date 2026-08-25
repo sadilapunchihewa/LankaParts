@@ -35,5 +35,18 @@ namespace LankaParts_Backend.Controllers
                 });
             }
         }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDto dto)
+        {
+            try
+            {
+                return Ok(await _authService.LoginAsync(dto));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
 }

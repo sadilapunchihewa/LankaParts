@@ -3,6 +3,7 @@ using System;
 using LankaParts_Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LankaParts_Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260825053644_AddOrders")]
+    partial class AddOrders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,14 +125,6 @@ namespace LankaParts_Backend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("DeliveredAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("FulfillmentStatus")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
                     b.Property<decimal>("LineTotal")
                         .HasPrecision(12, 2)
                         .HasColumnType("numeric(12,2)");
@@ -147,17 +142,11 @@ namespace LankaParts_Backend.Migrations
                         .HasMaxLength(80)
                         .HasColumnType("character varying(80)");
 
-                    b.Property<DateTime?>("ProcessingAt")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
                     b.Property<int>("SellerCompanyId")
                         .HasColumnType("integer");
-
-                    b.Property<DateTime?>("ShippedAt")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("SparePartId")
                         .HasColumnType("integer");
@@ -165,9 +154,6 @@ namespace LankaParts_Backend.Migrations
                     b.Property<decimal>("UnitPrice")
                         .HasPrecision(12, 2)
                         .HasColumnType("numeric(12,2)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -241,102 +227,6 @@ namespace LankaParts_Backend.Migrations
                             Id = 8,
                             Name = "Accessories"
                         });
-                });
-
-            modelBuilder.Entity("LankaParts_Backend.Models.Payment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Amount")
-                        .HasPrecision(12, 2)
-                        .HasColumnType("numeric(12,2)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Method")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("PaidAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("PaymentNumber")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.Property<string>("TransactionReference")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId")
-                        .IsUnique();
-
-                    b.HasIndex("PaymentNumber")
-                        .IsUnique();
-
-                    b.ToTable("Payments");
-                });
-
-            modelBuilder.Entity("LankaParts_Backend.Models.Review", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Comment")
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("CustomerUserId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("OrderItemId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("SparePartId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerUserId");
-
-                    b.HasIndex("OrderItemId")
-                        .IsUnique();
-
-                    b.HasIndex("SparePartId", "CreatedAt");
-
-                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("LankaParts_Backend.Models.SellerCompany", b =>
@@ -588,44 +478,6 @@ namespace LankaParts_Backend.Migrations
                     b.Navigation("SparePart");
                 });
 
-            modelBuilder.Entity("LankaParts_Backend.Models.Payment", b =>
-                {
-                    b.HasOne("LankaParts_Backend.Models.Order", "Order")
-                        .WithOne("Payment")
-                        .HasForeignKey("LankaParts_Backend.Models.Payment", "OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("LankaParts_Backend.Models.Review", b =>
-                {
-                    b.HasOne("LankaParts_Backend.Models.User", "CustomerUser")
-                        .WithMany()
-                        .HasForeignKey("CustomerUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("LankaParts_Backend.Models.OrderItem", "OrderItem")
-                        .WithOne()
-                        .HasForeignKey("LankaParts_Backend.Models.Review", "OrderItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LankaParts_Backend.Models.SparePart", "SparePart")
-                        .WithMany("Reviews")
-                        .HasForeignKey("SparePartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CustomerUser");
-
-                    b.Navigation("OrderItem");
-
-                    b.Navigation("SparePart");
-                });
-
             modelBuilder.Entity("LankaParts_Backend.Models.SellerCompany", b =>
                 {
                     b.HasOne("LankaParts_Backend.Models.User", "ReviewedByUser")
@@ -666,8 +518,6 @@ namespace LankaParts_Backend.Migrations
             modelBuilder.Entity("LankaParts_Backend.Models.Order", b =>
                 {
                     b.Navigation("Items");
-
-                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("LankaParts_Backend.Models.PartCategory", b =>
@@ -678,11 +528,6 @@ namespace LankaParts_Backend.Migrations
             modelBuilder.Entity("LankaParts_Backend.Models.SellerCompany", b =>
                 {
                     b.Navigation("SpareParts");
-                });
-
-            modelBuilder.Entity("LankaParts_Backend.Models.SparePart", b =>
-                {
-                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("LankaParts_Backend.Models.User", b =>
