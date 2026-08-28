@@ -1,0 +1,4 @@
+import { LayoutDashboard, MapPin, Package, UserRound } from 'lucide-react'
+import { NavLink, Outlet } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
+export default function AccountLayout() { const { user } = useAuth(); return <main className="account-page"><div className="container account-shell"><aside className="account-sidebar"><div className="account-user"><span>{user.firstName[0]}{user.lastName[0]}</span><div><strong>{user.firstName} {user.lastName}</strong><small>{user.email}</small></div></div><nav><NavLink end to="/account"><LayoutDashboard /> Overview</NavLink><NavLink to="/account/orders"><Package /> My Orders</NavLink><NavLink to="/account/profile"><UserRound /> Profile Details</NavLink><a href="#addresses"><MapPin /> Saved Addresses</a></nav></aside><section className="account-content"><Outlet /></section></div></main> }

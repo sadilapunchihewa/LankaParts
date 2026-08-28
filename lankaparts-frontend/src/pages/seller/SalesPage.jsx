@@ -1,0 +1,7 @@
+import { BarChart3 } from 'lucide-react'
+import { earningsHistory, sellerOrders } from '../../data/seller'
+import { formatLKR } from '../../utils/currency'
+
+export default function SalesPage() {
+  return <section className="seller-page"><div className="seller-page-heading"><span>Sales</span><h1>Sales overview</h1><p>Monthly sales performance and order revenue at a glance.</p></div><section className="seller-panel-block"><div className="panel-heading"><div><h2>Monthly sales</h2><p>Gross marketplace sales before commission.</p></div><BarChart3 /></div><div className="sales-bars large">{earningsHistory.toReversed().map((row) => <span key={row.month} style={{ '--height': `${Math.max(22, row.grossSales / 6000)}%` }}><i></i><small>{row.month.split(' ')[0]}</small></span>)}</div></section><div className="seller-table-wrap"><div className="seller-order-head"><span>Order ID</span><span>Customer</span><span>Date</span><span>Items</span><span>Amount</span><span>Status</span><span>Channel</span></div>{sellerOrders.map((order) => <div className="seller-order-row" key={order.orderId}><strong>{order.orderNumber}</strong><span>{order.customerName}</span><span>{new Date(order.createdAt).toLocaleDateString('en-LK')}</span><span>{order.items.length}</span><strong>{formatLKR(order.sellerSubtotal)}</strong><b className={`status-badge status-${order.status.toLowerCase()}`}>{order.status}</b><span>Marketplace</span></div>)}</div></section>
+}

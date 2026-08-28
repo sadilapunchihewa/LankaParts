@@ -1,0 +1,1 @@
+export default function PartVisual({ product, className = '' }) { return <div className={`part-display ${product.type} ${className}`} role="img" aria-label={`${product.name} product placeholder`}><div className="part-shape"><span></span></div></div> }
